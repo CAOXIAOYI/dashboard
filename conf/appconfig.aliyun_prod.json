@@ -1,0 +1,6 @@
+{
+    "ENV": "prd",
+    "basepath": "",
+    "restfulapi": "//api.c2py.com",
+    "webresourcePDBaseUrl": "//api.jokco.com/static/build/"
+}

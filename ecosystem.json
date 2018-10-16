@@ -1,0 +1,44 @@
+{
+    "apps": [
+        {
+            "name":"Dashboard_test",
+            "script": "./bin/www",
+            "error_file": "/var/log/node/pm2/web_dashboard_test.err.log",
+            "out_file": "/var/log/node/pm2/web_dashboard_test.out.log",
+            "instances": 0,
+            "max_memory_restart": "512M",
+            "exec_mode": "cluster",
+            "env": {
+                "NODE_ENV": "test",
+                "PORT":  "4001"
+            }
+        },
+        {
+            "name":"Dashboard_dev",
+            "script": "./bin/www",
+            "error_file": "/var/log/node/pm2/web_dashboard_test.err.log",
+            "out_file": "/var/log/node/pm2/web_dashboard_test.out.log",
+            "instances": 0,
+            "max_memory_restart": "512M",
+            "exec_mode": "cluster",
+            "env": {
+                "NODE_ENV": "dev",
+                "PORT":  "4001"
+            }
+        },
+        
+        {
+            "name":"Dashboard_aliyun_prod",
+            "script": "./bin/www",
+            "error_file": "/var/log/node/pm2/web_dashboard.err.log",
+            "out_file": "/var/log/node/pm2/web_dashboard.out.log",
+            "instances": 0,
+            "max_memory_restart": "512M",
+            "exec_mode" : "cluster",
+            "env": {
+                "NODE_ENV": "aliyun_prod",
+                "PORT":  "4001"
+            }
+        }
+    ]
+}

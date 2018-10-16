@@ -1,0 +1,57 @@
+.page-SecondaryAnaly {
+  padding-top: 140px;
+  .SecondaryanalyRight {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    &_left {
+      width: 30%;
+      padding-right: 15px;
+      .content_box {
+        display: flex;
+        flex-direction: column;
+        padding: 15px 20px;
+        height: 100%;
+        .loop_top {
+          height: 40%;
+          display: flex;
+          flex-direction: column;
+
+          .loop_content {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            &.loop_number {
+              color: @blue;
+              font-size: 45px;
+              text-align: left;
+              padding-left: 20px;
+            }
+          }
+        }
+        .loop_bottom {
+          height: 60%;
+        }
+      }
+    }
+    &_right {
+      width: 70%;
+      .event {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        .content_box {
+          width: 100%;
+          padding: 20px 15px;
+          height: 100%;
+          .event-table {
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+}

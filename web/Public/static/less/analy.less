@@ -1,0 +1,98 @@
+.page-analy {
+  .page-left,
+  .page-right {
+    width: 25%;
+    flex-shrink: 0;
+    padding: 50px 30px 10px 30px;
+    box-sizing: border-box;
+    .item {
+      height: 25%;
+      padding-bottom: 15px;
+      &:last-of-type {
+        padding-bottom: 0;
+      }
+      .label {
+        margin-bottom: 10px;
+        line-height: 20px;
+        height: 20px;
+        text-align: left;
+        color: #5fa3ac;
+      }
+      .tabel {
+        width: 100%;
+        height: calc(~'100% - 35px');
+        .scrollList {
+          height: calc(~'100% - 33%');
+          overflow: auto;
+          .scroll-body {
+            animation: scrollTable 10s linear infinite;
+            &:hover {
+              animation-play-state: paused;
+            }
+          }
+          &::-webkit-scrollbar {
+            width: 0;
+          }
+          .row2,
+          .row3 {
+            line-height: 20px;
+            min-height: 42px;
+            display: flex;
+            justify-content: center;
+            .flex {
+              display: flex;
+              justify-content: center;
+            }
+          }
+        }
+        .row1 {
+          height: 33%;
+        }
+        .row1 {
+          background: rgba(7, 35, 82, 0.4);
+          .h6 {
+            display: inline-block;
+            color: @blue;
+            font-size: 13px;
+            display: flex;
+            justify-content: center;
+          }
+        }
+        .row2 {
+          background: rgba(9, 25, 61, 0.4);
+        }
+        .row3 {
+          background: rgba(12, 35, 69, 0.4);
+        }
+        .flex {
+          font-size: 12px;
+          flex: 1;
+          text-align: left;
+          align-self: center;
+        }
+      }
+    }
+  }
+  .center {
+    text-align: center;
+  }
+}
+
+.page-merge-analy {
+  position: relative;
+  .top-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 1;
+  }
+  .page-title {
+    background-size: 480px 70px;
+    background-position: center center;
+  }
+  .page-center {
+    padding-top: 140px;
+  }
+}

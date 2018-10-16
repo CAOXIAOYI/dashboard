@@ -1,0 +1,6 @@
+{
+    "ENV": "test",
+    "basepath": "",
+    "restfulapi": "//api.c2py.com",
+    "webresourcePDBaseUrl": "//a.paiwenwan.com.cn/build/"
+ }
