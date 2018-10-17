@@ -1,4 +1,4 @@
-import '../node_modules/antd/dist/antd.min.css'
+// import '../node_modules/antd/dist/antd.min.css'
 import '../less/import.less'
 
 import BaseApp from './core/app.base'

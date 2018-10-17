@@ -100,6 +100,7 @@ const buildPkgName = 'v_' + (__enviroment__ !== 'dev' ? timespan : 'dev');
 
 // 打包文件保存路径
 const savePath = staticPath + 'build/' + buildPkgName + '/';
+
 // 发布后静态资源存放路径
 const publicPath = appconfig.webresourcePDBaseUrl + buildPkgName + '/';
 
@@ -136,7 +137,7 @@ const __webpackConfig__ = {
     },
 
     output: {
-        path: savePath,
+        path: '/build/' + buildPkgName + '/' ,
         filename: 'js/[name].js',
         chunkFilename: 'js/[name].js',
         publicPath
@@ -146,20 +147,27 @@ const __webpackConfig__ = {
 		hot: true,
     },
     module: {
-        loaders: [
+        rules: [
             { 
                 test: /\.js$/, 
                 exclude: /node_modules/, 
-                loader: 'babel-loader?presets[]=es2015&presets[]=stage-0&presets[]=react' 
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['env','stage-0','react']
+                    }
+                }
+                // 'babel-loader?presets[]=&presets' 
+
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextWebpackPlugin.extract('style-loader', 'css-loader')
+                use: ExtractTextWebpackPlugin.extract('style-loader', 'css-loader')
             },
             {
                 test: /\.less$/,
                 exclude: /node_modules/,
-                loader: ExtractTextWebpackPlugin.extract([
+                use: ExtractTextWebpackPlugin.extract([
                     'css-loader',
                     // 'autoprefixer-loader?browsers=last 10 versions',
                     'less-loader',
@@ -168,27 +176,27 @@ const __webpackConfig__ = {
             { 
                 test: /\.(eot|woff|svg|ttf|woff2|appcache)(\?|$)/, 
                 exclude: /node_modules/, 
-                loader: 'file-loader?name=font/[name]_[hash:8].[ext]' 
+                use: 'file-loader?name=font/[name]_[hash:8].[ext]' 
             },
             { 
                 test: /\.(jpg|gif|png)$/, 
                 exclude: /node_modules/, 
-                loader: 'url-loader?limit=1&name=img/[name]_[hash:8].[ext]' 
+                use: 'url-loader?limit=1&name=img/[name]_[hash:8].[ext]' 
             },
             { 
                 test: /\.json$/, 
                 exclude: /node_modules/, 
-                loader: 'json-loader' 
+                use: 'json-loader'
             }
 
         ]
     },
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'libs',
-            filename: 'js/libs.js'
-        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'libs',
+        //     filename: 'js/libs.js'
+        // }),
         new CopyWebpackPlugin([
             {
                 from: staticPath + 'img/',
@@ -206,9 +214,15 @@ const __webpackConfig__ = {
         new ExtractTextWebpackPlugin('css/appmain.css'),
 		new webpack.HotModuleReplacementPlugin(),
     ],
+    // optimization:{
+    //     splitChunks:{
+    //         name: 'libs',
+    //         filename: 'js/libs.js'
+    //     }
+    // },
 
     resolve: {
-        extensions: ['', '.js']
+        extensions: ['.js', '.jsx', '.ts','.json']
     }
 
 };
@@ -223,13 +237,13 @@ if (__enviroment__ !== 'dev') {
         canPrint: true
     }));
    
-    __webpackConfig__.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false,
-            drop_console: true,
-            drop_debugger: true
-        }
-    }));
+    // __webpackConfig__.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    //     compress: {
+    //         warnings: false,
+    //         drop_console: true,
+    //         drop_debugger: true
+    //     }
+    // }));
 
     __webpackConfig__.plugins.push(new webpack.DefinePlugin({
         'process.env': {
