@@ -7,12 +7,17 @@
  *      2. config：网站配置文件存放路径
 */
 
+const path = require('path');
+
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const program = require('commander');
 const fs = require('fs-extra');
 const colors = require('colors');
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
+
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 
@@ -34,7 +39,8 @@ const pkg = JSON.parse(fs.readFileSync(program.path + 'pkg.config.json', 'utf-8'
 const buildConfigPath = program.path + pkg.config;
 
 // 静态资源存放路径
-const staticPath = program.path + pkg.static;
+// const staticPath = program.path + pkg.static;
+const staticPath = '';
 
 console.log('buildConfigPath: '.green + buildConfigPath);
 console.log('staticPath: '.green + staticPath);
@@ -120,7 +126,7 @@ const npmconfig = JSON.parse(fs.readFileSync(staticPath + 'package.json', 'utf-8
 const npmpkgs = [];
 for (const o in npmconfig.dependencies) {
     if (npmconfig.dependencies.hasOwnProperty(o)) {
-        npmpkgs.push(staticPath + 'node_modules/' + o);
+        npmpkgs.push(path.resolve(__dirname,'./node_modules/' + o));
     }
 }
 
@@ -133,14 +139,14 @@ const __webpackConfig__ = {
     mode: 'production',
     entry: {
         libs: npmpkgs,
-        app: staticPath + 'js/app.js'
+        app: path.resolve(__dirname, 'js/app.js')
     },
 
     output: {
-        path: '/build/' + buildPkgName + '/' ,
+        path:path.resolve(__dirname, 'build/' + buildPkgName),
         filename: 'js/[name].js',
         chunkFilename: 'js/[name].js',
-        publicPath
+        publicPath:'build/' + buildPkgName
     },
     devServer: {
         historyApiFallback: true,
@@ -181,13 +187,13 @@ const __webpackConfig__ = {
             { 
                 test: /\.(jpg|gif|png)$/, 
                 exclude: /node_modules/, 
-                use: 'url-loader?limit=1&name=img/[name]_[hash:8].[ext]' 
+                use: 'url-loader' 
             },
-            { 
-                test: /\.json$/, 
-                exclude: /node_modules/, 
-                use: 'json-loader'
-            }
+            // { 
+            //     test: /\.json$/, 
+            //     exclude: /node_modules/, 
+            //     use: 'json-loader'
+            // }
 
         ]
     },
@@ -199,30 +205,47 @@ const __webpackConfig__ = {
         // }),
         new CopyWebpackPlugin([
             {
-                from: staticPath + 'img/',
+                from: staticPath + './img/',
                 to: 'img/'
-            },
-            {
-                from: staticPath + 'image/',
-                to: 'image/'
-            },
-            {
-                from: staticPath + 'images/',
-                to: 'images/'
             }
         ]),
-        new ExtractTextWebpackPlugin('css/appmain.css'),
+        new ExtractTextWebpackPlugin('./css/appmain.css'),
 		new webpack.HotModuleReplacementPlugin(),
     ],
     // optimization:{
     //     splitChunks:{
     //         name: 'libs',
-    //         filename: 'js/libs.js'
+    //         filename: path.resolve(__dirname, 'js/libs.js')
     //     }
     // },
+      optimization: {
+        minimize: true, //是否进行代码压缩
+        splitChunks: {
+          chunks: "async",
+          minSize: 30000, //模块大于30k会被抽离到公共模块
+          minChunks: 1, //模块出现1次就会被抽离到公共模块
+          maxAsyncRequests: 5, //异步模块，一次最多只能被加载5个
+          maxInitialRequests: 3, //入口模块最多只能加载3个
+          name: true,
+          cacheGroups: {
+            default: {
+              minChunks: 2,
+              priority: -20,
+              reuseExistingChunk: true,
+            },
+            vendors: {
+              test: /[\\/]node_modules[\\/]/,
+              priority: -10
+            }
+          }
+        },
+        runtimeChunk :{
+          name: "runtime"
+        }
+      },
 
     resolve: {
-        extensions: ['.js', '.jsx', '.ts','.json']
+        extensions: ['.js', '.jsx', '.ts']
     }
 
 };
