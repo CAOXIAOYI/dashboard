@@ -68,7 +68,8 @@ class SecondaryLoop extends BaseView {
 
     this.state = {
       pageTitle: '二次回路单一异常分析',
-      pageIdx: 0
+      pageIdx: 0,
+      rowId:0
     }
 
     const dateFormat = 'YYYY-MM-DD HH:mm'
@@ -1057,6 +1058,11 @@ class SecondaryLoop extends BaseView {
     )
   }
 
+  setRowClassName(record){
+    console.log(this.state.rowId)
+    return record.key == this.state.rowId ? 'active-row' : '';
+  }
+
   renderTable() {
     const searchValue = this.state.searchValue
 
@@ -1076,25 +1082,25 @@ class SecondaryLoop extends BaseView {
         key: 'region'
       },
       {
+        title: '户名',
+        dataIndex: 'username',
+        width: '20%',
+        align: 'center',
+        key: 'username'
+      },
+      {
         title: '巡检仪资产编号',
         dataIndex: 'serialNum',
         width: '20%',
         align: 'center',
         key: 'serialNum'
       },
-      {
-        title: '电能表资产编号',
-        dataIndex: 'elecSerialNum',
-        width: '20%',
-        align: 'center',
-        key: 'elecSerialNum'
-      },
       // {
-      //   title: '户名',
-      //   dataIndex: 'username',
-      //   width: '5.4%',
+      //   title: '电能表资产编号',
+      //   dataIndex: 'elecSerialNum',
+      //   width: '20%',
       //   align: 'center',
-      //   key: 'username'
+      //   key: 'elecSerialNum'
       // },
       {
         title: '用电类型',
@@ -1148,24 +1154,24 @@ class SecondaryLoop extends BaseView {
 
     let tableHeight = $('#tableHeight').height() - 60 // table表格的高度
     let self = this;
-
-    setTimeout(function(){
-      const height = $('.ant-table-body').height();
-      const scrollHeight = $('.ant-table-tbody').height();
-      let animationStyle = {};
-      //认为有滚动条
-      if(scrollHeight > height){
-        const time = scrollHeight / 20 + 's';
-        animationStyle = {
-          animationDuration:time
-        }
-      }else{
-        animationStyle = {
-          animationDuration:'unset'
-        }
-      }
-      $('.scrollTable .ant-table-tbody').css(animationStyle);
-    },100);
+    //去掉滚动  11月13日
+    // setTimeout(function(){
+    //   const height = $('.ant-table-body').height();
+    //   const scrollHeight = $('.ant-table-tbody').height();
+    //   let animationStyle = {};
+    //   //认为有滚动条
+    //   if(scrollHeight > height){
+    //     const time = scrollHeight / 20 + 's';
+    //     animationStyle = {
+    //       animationDuration:time
+    //     }
+    //   }else{
+    //     animationStyle = {
+    //       animationDuration:'unset'
+    //     }
+    //   }
+    //   $('.scrollTable .ant-table-tbody').css(animationStyle);
+    // },100);
 
     // $('.scrollTable .ant-table-body').on('scroll', function () {
     //   let viewH = $(this).height(),
@@ -1205,6 +1211,7 @@ class SecondaryLoop extends BaseView {
             dataSource={tableData}
             pagination={false}
             scroll={{ y: tableHeight }}
+            rowClassName={this.setRowClassName.bind(this)}
             locale={{
               emptyText: '暂无数据'
             }}
@@ -1213,9 +1220,10 @@ class SecondaryLoop extends BaseView {
                 onClick: () => {
                   let pageTwo = {}
                   pageTwo.record = record
-
+                  console.log(record)
                   self.setState({
-                    pageTwo
+                    pageTwo,
+                    rowId: record.key,
                   },()=>{
                     self.fetchrowCLick(record)  
                   })

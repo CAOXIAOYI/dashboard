@@ -92,9 +92,13 @@
 }
 
 .page-SecondaryLoopLeft {
+    user-select: text;
     .ant-table-tbody {
-        tr.active {
-            background: #f00;
+        user-select: text;
+        tr.active-row {
+            td{
+                color:#00bcd4;
+            }
         }
     }
     .SecondaryLoopRight {
@@ -252,8 +256,7 @@
         }
     }
 }
-.page-SecondaryLoopLeft .SecondaryLoopRight_right .event_bottom_left .scroll-content.unscroll{
+.page-SecondaryLoopLeft .scrollTable .ant-table-tbody{
     animation: unset;
     height: 100%;
-    
 }
